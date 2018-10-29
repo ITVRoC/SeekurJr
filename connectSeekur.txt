@@ -1,0 +1,8 @@
+sudo ip route add 10.0.125.0/24 via 10.0.126.1
+
+ssh guest@10.0.125.32
+password: mobilerobots
+
+export ROS_MASTER_URI="http://10.0.125.32:11311"
+export ROS_MASTER_IP="10.0.125.32"
+export ROS_IP="10.0.126.199"

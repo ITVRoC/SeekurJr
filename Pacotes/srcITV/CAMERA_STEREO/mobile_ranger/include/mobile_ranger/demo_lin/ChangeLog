@@ -1,0 +1,10 @@
+2014-06-16 v20120111-amr8 reedh
+	* opencv_simple.c, opencv_simple_color.c
+	- Accept device index on command line
+2009-06-09 v2.01 andrew
+	* makefile
+	- Updated to build properly in a partial tree when libfrdev isn't present.
+2008-08-30 v2.00 andrew
+	* All
+	- Updated to work with slight API changes in new libfrcam.
+

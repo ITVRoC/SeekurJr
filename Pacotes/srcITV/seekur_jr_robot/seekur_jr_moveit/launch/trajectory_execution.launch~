@@ -1,0 +1,16 @@
+<launch>
+
+  <!-- This file makes it easy to include the settings for trajectory execution  -->  
+
+  <param name="allowed_execution_duration_scaling" value="4.0" />
+  <param name="execution_duration_monitoring" value="false" />
+ 
+  <!-- Flag indicating whether MoveIt! is allowed to load/unload  or switch controllers -->
+  <arg name="moveit_manage_controllers" default="true"/>
+  <param name="moveit_manage_controllers" value="$(arg moveit_manage_controllers)"/>
+  
+  <!-- Load the robot specific controller manager; this sets the moveit_controller_manager ROS parameter -->
+  <arg name="moveit_controller_manager" default="seekur_jr" />
+  <include file="$(find seekur_jr_moveit)/launch/$(arg moveit_controller_manager)_moveit_controller_manager.launch" />
+  
+</launch>
