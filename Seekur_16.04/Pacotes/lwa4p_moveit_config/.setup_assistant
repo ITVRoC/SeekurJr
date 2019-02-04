@@ -1,0 +1,8 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: schunk_lwa4p
+    relative_path: urdf/robot.urdf.xacro
+  SRDF:
+    relative_path: config/lwa4p.srdf
+  CONFIG:
+    generated_timestamp: 1464872823
