@@ -1,0 +1,8 @@
+<launch>
+	<!-- run p2os to control the pioneer -->
+	<node pkg="p2os_driver" type="p2os_driver" name="p2os_driver">
+		 <param name="port" value="/dev/ttyS0"/>
+		 <param name="pulse" value="1.0" />
+		 <param name="use_sonar" value="false" />
+	</node>
+</launch>

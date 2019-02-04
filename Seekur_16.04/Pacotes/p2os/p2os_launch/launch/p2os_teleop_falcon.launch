@@ -1,0 +1,20 @@
+<launch>
+	<arg name="FalconConfiguration1" value="0"/>
+	<arg name="FalconConfiguration2" value="0"/>
+	<arg name="FalconForceFeedbackTest" value="1"/>
+
+	<include file="$(find p2os_launch)/launch/p2os_driver.launch" />
+	
+	<!-- run corequisites -->
+	<group if="$(arg FalconConfiguration1)" >
+		<include file="$(find p2os_launch)/launch/teleop_joy_falcon.launch" />
+	</group>
+
+	<group if="$(arg FalconConfiguration2)" >
+		<include file="$(find p2os_launch)/launch/teleop_joy_falcon2.launch" />
+	</group>
+
+	<group if="$(arg FalconForceFeedbackTest)">
+		<include file="$(find p2os_launch)/launch/teleop_joy_falcon_ForceFeedback.launch" /> <!-- Run forceFeedback logic for configuration 1 -->
+	</group>
+</launch>

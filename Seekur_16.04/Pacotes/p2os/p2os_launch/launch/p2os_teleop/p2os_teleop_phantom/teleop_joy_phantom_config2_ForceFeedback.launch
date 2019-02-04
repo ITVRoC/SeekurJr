@@ -1,0 +1,19 @@
+<launch>
+	<machine name="robot" address="10.0.125.32" env-loader="/home/guest/catkin_ws/master_env.sh" user="guest"/>
+
+	<!-- run the teleop node to send movement velocities to the pioneer -->
+	<node machine="robot" pkg="p2os_teleop_phantom" type="p2os_teleop_phantom2" name="p2os_teleop_phantom_config2" >
+		<remap from="/des_vel" to="/base_controller/command" />
+	</node>
+	
+	<arg name="MonoVision" value="1"/>
+	<arg name="StereoVision" value="0"/>
+	
+	<group if="$(arg MonoVision)" >
+		<node machine="robot" pkg="mobile_ranger" type="stereo_cam_simplified" name="stereo_cam_simplified"/>
+	</group>
+	
+	<group if="$(arg StereoVision)" >
+		<node machine="robot" pkg="mobile_ranger" type="stereo_cam_oculus" name="stereo_cam_oculus"/>
+	</group>
+</launch>

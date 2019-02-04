@@ -1,0 +1,5 @@
+<launch>
+	<!-- publish the static transform from the center of the robot to the laser rangefinder (required for slam_gmapping) -->
+	<node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.52 0 0.24 0 0 0 base_link laser 50" />
+	<node pkg="tf" type="static_transform_publisher" name="base_link_to_forces_laserScan" args="0.52 0 0.24 0 0 0 base_link forces_laserScan 100" />
+</launch>
