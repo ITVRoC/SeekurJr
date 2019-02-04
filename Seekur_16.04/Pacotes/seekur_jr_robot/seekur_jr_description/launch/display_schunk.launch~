@@ -1,0 +1,25 @@
+<launch>
+	<!-- <arg name="model" default="$(find seekur_jr_description)/robots/seekur_jr_with_schunk_arm.urdf.xacro"/>
+	<arg name="gui" default="True" />
+	<param name="use_gui" value="$(arg gui)"/>
+	<param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+--> 
+	<!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find seekur_jr_description)/rviz/urdf.rviz" required="true" />  -->
+
+        <!-- start robot_state_publisher -->
+	<node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher"/>
+
+	<!-- start joint publisher -->  
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+	    <param name="/use_gui" value="false"/>
+	  </node> 
+
+	<!-- upload joint configuration -->
+	<include file="$(find schunk_default_config)/launch/upload_param_lwa4p.launch" />
+
+	<!-- start arm -->
+	<include file="$(find schunk_bringup)/components/lwa4p.launch" />
+	<!-- start dashboard -->
+	<include file="$(find schunk_bringup)/tools/dashboard_lwa4p.launch" />	
+
+</launch>
