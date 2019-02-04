@@ -1,0 +1,65 @@
+language: cpp
+
+python:
+- "2.7"
+
+sudo: required
+
+dist: trusty
+
+group: deprecated-2017Q2
+
+notifications:
+  email:
+    recipients:
+    - dev@mayfieldrobotics.com
+    on_success: change
+    on_failure: change
+
+before_install:
+# https://github.com/travis-ci/travis-ci/issues/5326
+- export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
+
+# http://docs.travis-ci.com/user/gui-and-headless-browsers/#Configuring-xvfb-screen-size-and-more
+- "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1024x768x24"
+- "export DISPLAY=:99.0"
+
+install:
+# setup env for ansible travis.yml
+- export TRAVIS_CI_PATH=$(pwd)
+- export ROS_STATE_PATH=~/.ros
+- mkdir ../ros-webrtc-ws
+- export TRAVIS_WS_PATH=$(readlink -f $(pwd)/../ros-webrtc-ws)
+
+# ansible travis.yml
+- cd test/provision
+- sudo pip install "ansible >=2,<3"
+- ansible-galaxy install -r requirements.yml
+- ansible-playbook -i "localhost," -c local travis.yml
+
+script:
+# tests
+- cd $TRAVIS_WS_PATH
+- source devel/setup.bash
+- catkin_make run_tests
+- catkin_test_results
+
+# py coverage
+- coverage combine $ROS_STATE_PATH/.coverage.*
+- coverage report -m
+- coverage xml
+- cp coverage.xml $TRAVIS_CI_PATH/
+
+# cpp coverage
+- lcov --path . --directory . --capture --no-external --output-file lcov.info
+- lcov --remove lcov.info 'test/*' 'devel/*' --output-file lcov.info
+- lcov --list lcov.info
+- rm lcov.info
+- find . -type f -name "*.gcda" -exec gcov -pb {} +
+- find . -name "*.gcov" -a -not -name "*#src#ros_webrtc#src#cpp#*" -exec rm {} +
+- find . -name "*.gcov" -exec sed -i "s|$TRAVIS_WS_PATH/src/ros_webrtc|$TRAVIS_CI_PATH|g" {} +
+- cp *.gcov $TRAVIS_CI_PATH/
+
+after_success:
+- cd $TRAVIS_CI_PATH
+- bash <(curl -s https://codecov.io/bash) -X gcov -X coveragepy

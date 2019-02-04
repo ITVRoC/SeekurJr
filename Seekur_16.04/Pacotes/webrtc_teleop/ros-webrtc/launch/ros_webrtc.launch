@@ -1,0 +1,90 @@
+<launch>
+    <!--group ns='ros_webrtc_signaling'>
+        <node name="signaling" pkg="ros_webrtc" type="ros_webrtc_signaling" output="screen" launch-prefix="xterm -e">
+            <param name="host" type="string" value="0.0.0.0" />
+            <param name="port" type="int" value="9000" />
+        </node>
+    </group-->
+
+    <group ns="ros_webrtc">
+        <!-- params -->
+        <rosparam>
+cameras:
+  depth:
+    constraints:
+      mandatory: {maxHeight: '720', maxWidth: '1280', minHeight: '720', minWidth: '1280'}
+    label: depth
+    publish: no
+  infrared:
+    constraints:
+      mandatory: {maxHeight: '720', maxWidth: '1280', minHeight: '720', minWidth: '1280'}
+    label: infrared
+    publish: no
+  rgb:
+    constraints:
+      mandatory: {maxHeight: '720', maxWidth: '1280', minHeight: '720', minWidth: '1280'}
+    label: rgb
+    publish: no
+  cam_360:
+    label: cam_360
+    publish: no
+  map:
+    label: map
+    publish: no
+    rotation: 0
+    #constraints:
+    #  mandatory: {maxHeight: '720', maxWidth: '1280', minHeight: '720', minWidth: '1280'}
+peer_connection:
+  constraints:
+    optional:
+#      googCpuOveruseDetection: "true"
+#      googCpuUnderuseThreshold: "40"
+#      googCpuOveruseThreshold: "60"
+#      googVeryHighBitrate: "true"
+      DtlsSrtpKeyAgreement: "true"
+ice_servers:
+- uri: stun:stun.services.mozilla.com:3478
+- uri: stun:stun.l.google.com:19302
+trace:
+  file: /tmp/ros_webrtc.trace
+  filter: all
+queue_sizes:
+  audio: 1000
+  video: 10
+  data: 10
+  event: 1000
+flush_frequency: 60
+reap_frequency: 15
+open_media_sources: true
+        </rosparam>
+        <param name="cameras/cam_360/name" value="$(optenv ROS_WEBRTC_WEBCAM ros:///camera_360/image_raw)" type="str" />
+        <!--param name="cameras/roscam/name" value="$(optenv ROS_WEBRTC_WEBCAM ros:///camera/infra1/image_rect_raw)" type="str" /-->
+      
+        <!--param name="cameras/webcam/name" value="$(optenv ROS_WEBRTC_WEBCAM id:///dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_5FD319FF-video-index0)" type="str" /-->
+        <!--param name="cameras/webcam/name" value="$(optenv ROS_WEBRTC_WEBCAM id:///dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_408FF8FF-video-index0)" type="str" /-->
+        <param name="cameras/depth/name" value="$(optenv ROS_WEBRTC_WEBCAM ros:///camera/aligned_depth_to_color/image_raw)" type="str" />
+        <param name="cameras/rgb/name" value="$(optenv ROS_WEBRTC_WEBCAM ros:///camera/rgb/image_raw)" type="str" />
+        <param name="cameras/infrared/name" value="$(optenv ROS_WEBRTC_WEBCAM ros:///camera/infra1/image_rect_raw)" type="str" />
+        <param name="cameras/map/name" value="$(optenv ROS_WEBRTC_WEBCAM ros:///ss/image)" type="str" />
+        
+
+        
+        
+        <!--param name="cameras/roscam/name" value="$(optenv ROS_WEBRTC_WEBCAM id:///dev/video1)" type="str" /-->
+        
+        <!-- host -->
+        <node name="host" pkg="ros_webrtc" type="ros_webrtc_host" output="screen" respawn="true"/>
+
+    </group>
+    
+    <group ns="ros_webrtc_example">
+        <node name="example" pkg="ros_webrtc" type="ros_webrtc_example" output="screen">
+            <param name="id" type="string" value="hostname"/>
+            <param name="signaling_url" type="string" value="ws://'127.0.0.1':9000" />
+            <param name="ros_webrtc_ns" type="string" value="/ros_webrtc" />
+        </node>
+
+        <!-- Set microphone from Ricoh Theta S as default on pulseaudio -->
+        <node name="microphone_setup" pkg="ros_webrtc" type="ros_set_mic.sh"/>
+    </group>
+</launch>

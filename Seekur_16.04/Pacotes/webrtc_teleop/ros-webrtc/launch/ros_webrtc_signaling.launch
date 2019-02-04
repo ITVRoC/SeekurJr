@@ -1,0 +1,7 @@
+<launch>
+<!--node name="signaling" pkg="ros_webrtc" type="ros_webrtc_signaling" output="screen" launch-prefix="xterm -e"-->
+    <node name="signaling" pkg="ros_webrtc" type="ros_webrtc_signaling" output="screen">
+        <param name="host" type="string" value="0.0.0.0" />
+        <param name="port" type="int" value="9000" />
+    </node>
+</launch>

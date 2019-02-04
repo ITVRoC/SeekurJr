@@ -1,0 +1,6 @@
+string status
+float64 available_outgoing_bitrate
+float32 current_round_trip_time
+uint64 bytes_sent
+uint64 bytes_received
+uint64 counter
