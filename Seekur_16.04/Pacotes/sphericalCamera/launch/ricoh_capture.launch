@@ -1,0 +1,18 @@
+<launch>
+    <node pkg="spherical_camera" type="ricoh_capture" name="ricoh_capture" output="screen" respawn="false">
+    	<param name="port" value="/dev/v4l/by-id/usb-Ricoh_Company__Ltd._RICOH_THETA_S_00272969-video-index0"/>
+        <param name="frame_rate" type="str" value="14"/>
+    </node>
+
+    <!-- Ricoh Theta S
+    $ v4l2-ctl - -list-formats-ext -d /dev/video1
+	ioctl: VIDIOC_ENUM_FMT
+	Index       : 0
+	Type        : Video Capture
+	Pixel Format: 'MJPG' (compressed)
+	Name        : Motion-JPEG
+		Size: Discrete 1280x720
+			Interval: Discrete 0.067s (14.985 fps)
+	-->
+
+</launch>
