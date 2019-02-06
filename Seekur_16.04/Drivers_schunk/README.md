@@ -11,7 +11,7 @@ and its joints. The executables in this folder use the canopen protocol.
 protocol for that joint is correct. 
 
 ### Important files:
-- LWA_tool.exe - Graphical interface that allows movement, temperature control, data visualization, arm status and exchange the communication protocol.
+- LWA_tool.exe - Graphical interface that allows movement, temperature monitoring, data visualization, arm status and exchange the communication protocol.
 - COT_ReferenceTool.exe - Executable for calibration of arm joints.
 - COT_GetErrorDetails.exe - Show detailed error messages.
 - COT_ResetToSMP.exe - Choose the joint and change your communication protocol to SMP.
