@@ -1,0 +1,14 @@
+<launch>
+	<machine name="robot" address="10.0.125.32" env-loader="/home/guest/catkin_ws/master_env.sh" user="guest"/>
+
+	<machine name="ubuntu-aline" address="10.0.126.196" env-loader="/home/itv/catkin_ws/slave_env.sh" user="itv" password="itv" timeout="20"/>	
+
+	<!-- run the teleop node to send movement velocities to the pioneer -->
+	<node machine="robot" pkg="p2os_teleop_falcon" type="p2os_teleop_falcon" name="p2os_teleop_falcon" >
+		<remap from="/des_vel" to="/base_controller/command" />
+	</node>
+	
+	<!-- run a joy node to control the pioneer -->
+	<node machine="ubuntu-aline" pkg="rosfalcon" type="joystick_node" name="joystick_node"/>
+	<!--<node machine="ubuntu-aline" pkg="joy" type="joy_node" name="pioneer_joy_controller" />-->
+</launch>

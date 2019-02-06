@@ -1,0 +1,10 @@
+<launch>
+	<machine name="ubuntu-aline" address="10.0.126.196" env-loader="/home/itv/catkin_ws/slave_env.sh" user="itv" password="itv" timeout="20"/>
+	
+	<machine name="robot" address="10.0.125.32" env-loader="/home/guest/catkin_ws/master_env.sh" user="guest"/>
+
+	<node machine="ubuntu-aline" name="talker" pkg="rospy_tutorials" type="talker"/>
+
+	<node machine="robot" name="listener" pkg="rospy_tutorials" type="listener"/>
+	
+</launch>

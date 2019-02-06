@@ -1,0 +1,9 @@
+<launch>
+	<include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch" />	
+	<include file="$(find p2os_launch)/launch/sicklms.launch" />
+	<include file="$(find p2os_launch)/launch/gmapping.launch" />
+	<include file="$(find p2os_launch)/launch/p2os_driver.launch" />
+	
+	<include file="$(find p2os_launch)/launch/p2os_teleop_falcon_forcesMap/teleop_joy_falcon_config1_ForceFeedback.launch" />
+	
+</launch>

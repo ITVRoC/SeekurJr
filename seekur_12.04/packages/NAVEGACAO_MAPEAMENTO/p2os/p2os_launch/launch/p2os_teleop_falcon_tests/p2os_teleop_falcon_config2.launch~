@@ -1,0 +1,16 @@
+<launch>
+	<arg name="FalconConfig2_NoForceFeedback" value="0"/>
+	<arg name="FalconConfig2_ForceFeedback" value="0"/>
+
+	<include file="$(find p2os_launch)/launch/sicklms.launch" />	
+	<include file="$(find p2os_launch)/launch/p2os_driver.launch" />
+	
+	<!-- run corequisites -->
+	<group if="$(arg FalconConfig2_NoForceFeedback)" >
+		<include file="$(find p2os_launch)/launch/p2os_teleop_falcon_tests/teleop_joy_falcon_config2_NoForceFeedback.launch" />
+	</group>
+
+	<group if="$(arg FalconConfig2_ForceFeedback)" >
+		<include file="$(find p2os_launch)/launch/p2os_teleop_falcon_tests/teleop_joy_falcon_config2_ForceFeedback.launch" />
+	</group>
+</launch>

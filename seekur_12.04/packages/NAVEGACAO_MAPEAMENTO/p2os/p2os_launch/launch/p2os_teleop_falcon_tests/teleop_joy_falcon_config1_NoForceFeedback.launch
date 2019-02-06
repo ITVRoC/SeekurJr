@@ -1,0 +1,13 @@
+<launch>
+	<machine name="robot" address="10.0.125.32" env-loader="/home/guest/catkin_ws/master_env.sh" user="guest"/>
+
+	<machine name="rugged1-pc" address="10.0.126.199" env-loader="/home/rugged1/catkin_ws/slave_env.sh" user="rugged1" password="rugged1" timeout="20"/>		
+
+	<!-- run the teleop node to send movement velocities to the pioneer -->
+	<node machine="robot" pkg="p2os_teleop_falcon" type="p2os_teleop_falcon" name="p2os_teleop_falcon" >
+		<remap from="/des_vel" to="/base_controller/command" />
+	</node>
+	
+	<!-- run a joy node to control the pioneer -->
+	<node machine="rugged1-pc" pkg="rosfalcon" type="joystick_NoForceFeedback_node" name="joystick_NoForceFeedback_node"/>
+</launch>

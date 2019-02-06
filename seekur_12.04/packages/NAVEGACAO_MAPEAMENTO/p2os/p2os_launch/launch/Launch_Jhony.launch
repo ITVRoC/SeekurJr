@@ -1,0 +1,69 @@
+<launch>
+	
+	<machine name="robot" address="10.0.125.32" env-loader="/home/guest/catkin_ws/master_env.sh" user="guest"/>
+
+	<machine name="ubuntu-jhony" address="10.0.126.198" env-loader="/home/itv/catkin_ws/slave_env.sh" user="itv" password="itv" timeout="20"/>	
+
+
+
+	<!-- Defining the arguments -->
+	<arg name="SICKLMSLaser" value="1"/>
+	<arg name="P2OS_Driver" value="1"/>
+	<arg name="KeyboardTeleop" value="0"/>
+	<arg name="Transform" value="1"/>
+	<arg name="enableMotor" value="1"/>
+
+
+
+        <!-- Start the p2os ROS Driver -->
+	<group if="$(arg P2OS_Driver)" >
+	<include file="$(find p2os_launch)/launch/p2os_driver.launch" />	
+	</group>
+	
+	
+        <!-- Start the teleoperation node for keyboard control -->
+        <group if="$(arg KeyboardTeleop)">
+                <include file="$(find p2os_launch)/launch/teleop_keyboard.launch" />
+        </group>
+
+
+        <!-- Publish the required transform -->
+        <group if="$(arg Transform)">
+		<include file="$(find p2os_launch)/launch/tf_base_link_to_laser.launch" />          
+        </group>  
+
+
+        <!-- Start the SICK LMS Laser Node if a SICK Laser is used -->
+        <group if="$(arg SICKLMSLaser)">
+               <include file="$(find p2os_launch)/launch/sicklms.launch" /> 
+        </group>
+
+<!-- Inicializar URDF   -->
+<arg name="model" default="$(find seekurjr_gazebo)/urdf/seekurjr.xacro.xml"/>
+	<arg name="gui" default="False" />
+	<param name="use_gui" value="$(arg gui)"/>
+	<param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />    
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> 
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />    
+
+<!-- Inicializar URDF  e Braco      "$(find seekur_jr_description)/robots/seekur_jr_with_schunk_arm.urdf.xacro" -->	
+      <!-- <include file="$(find seekur_jr_description)/launch/display_schunk.launch"/>  -->
+
+
+     <!-- <include file="$(find p2os_launch)/launch/gmapping.launch" machine="ubuntu-jhony"/>  -->
+
+	<node machine="ubuntu-jhony" pkg="gmapping" type="slam_gmapping" name="slam_gmapping" args="/scan">
+		<param name="delta" type="double" value="0.05" />
+		<param name="map_update_interval" value="1" />
+		<param name="temporalUpdate" type="double" value="1" />
+		<param name="xmin" type="double" value="-2" />
+		<param name="xmax" type="double" value="2" />
+		<param name="ymin" type="double" value="-2" />
+		<param name="ymax" type="double" value="2" />
+	</node>  
+
+
+
+</launch>
+

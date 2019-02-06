@@ -1,0 +1,7 @@
+plugins: []
+publish_frequency: 1.0
+footprint: [[-0.325, -0.325], [-0.325, 0.325], [0.325, 0.325], [0.46, 0.0], [0.325, -0.325]]
+
+<rosparam file="$(find p2os_launch)/launch/costmap_common_params.yaml" command="load" ns="/costmap_node/costmap" />
+
+

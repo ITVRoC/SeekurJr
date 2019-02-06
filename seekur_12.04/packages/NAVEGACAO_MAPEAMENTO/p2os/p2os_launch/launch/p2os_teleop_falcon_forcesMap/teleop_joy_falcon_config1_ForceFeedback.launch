@@ -1,0 +1,27 @@
+<launch>
+	<arg name="ubuntu-aline" value="0"/>
+	<arg name="rugged1" value="1"/>
+	
+	<machine name="robot" address="10.0.125.32" env-loader="/home/guest/catkin_ws/master_env.sh" user="guest"/>
+
+	<!-- run the teleop node to send movement velocities to the pioneer -->
+	<node machine="robot" pkg="p2os_teleop_falcon" type="p2os_teleop_falcon" name="p2os_teleop_falcon" >
+		<remap from="/des_vel" to="/base_controller/command" />
+	</node>
+	
+	<node machine="robot" pkg="mobile_ranger" type="stereo_cam" name="stereo_cam" />
+	
+	<!-- run a joy node to control the pioneer -->
+	<group if="$(arg ubuntu-aline)" >
+		<machine name="ubuntu-aline" address="10.0.126.196" env-loader="/home/aline/catkin_ws/slave_env.sh" user="aline" password="ubuntualine" timeout="20"/>
+		<node machine="ubuntu-aline" pkg="rosfalcon" type="joystick_config1_ForceFeedback_node" name="joystick_config1_ForceFeedback_node"/>
+	</group>
+	
+	<group if="$(arg rugged1)" >
+		<machine name="rugged1" address="10.0.126.199" env-loader="/home/rugged1/catkin_ws/slave_env.sh" user="rugged1" password="rugged1" timeout="20"/>
+		<node machine="rugged1" pkg="rosfalcon" type="joystick_config1_ForceFeedback_node" name="joystick_config1_ForceFeedback_node"/>
+			
+				
+		
+	</group>
+</launch>
