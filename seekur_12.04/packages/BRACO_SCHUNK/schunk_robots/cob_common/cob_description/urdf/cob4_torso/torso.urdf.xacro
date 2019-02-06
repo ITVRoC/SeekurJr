@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<include filename="$(find cob_description)/urdf/cob4_torso/torso.gazebo.xacro" />
+	<include filename="$(find cob_description)/urdf/cob4_torso/torso.transmission.xacro" />
+	<include filename="$(find cob_description)/urdf/sensors/kinect.urdf.xacro" />
+	<include filename="$(find cob_description)/urdf/sensors/softkinetic.urdf.xacro" />
+
+	<xacro:macro name="torso" params="parent name *origin">
+
+		<joint name="torso_base_joint" type="fixed">
+		  <insert_block name="origin" />
+		  <child link="torso_base_link" />
+		  <parent link="${parent}"/>
+		</joint>
+    
+		<link name="torso_base_link">
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="1"/>
+				<inertia ixx="0.01" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+			</inertial>
+		</link>
+
+		<joint name="torso_1_joint" type="revolute">
+		  <origin xyz="0 0 0.04642" rpy="0 0 0"/>
+		  <child link="torso_1_link" />
+		  <parent link="torso_base_link"/>
+		  <calibration rising="${torso_1_ref}"/>
+		  <axis xyz="0 0 1" />
+		  <dynamics damping="2.0" friction="0.0"/>
+		  <limit effort="100" lower="-6.2831" upper="6.2831" velocity="1.4"/>
+		</joint>
+
+		<link name="torso_1_link">
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="50"/>
+				<inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+			</inertial>
+		</link>
+
+		<joint name="torso_2_joint" type="revolute">
+		  <origin xyz="0 -0.14734 0.07547" rpy="-0.5236 0 0" />
+		  <child link="torso_2_link" />
+		  <parent link="torso_1_link"/>
+		  <calibration rising="${torso_2_ref}"/>
+		  <axis xyz="0 0 1" />
+		  <dynamics damping="2.0" friction="0.0"/>
+		  <limit effort="100" lower="-6.2831" upper="6.2831" velocity="1.4"/>
+		</joint>
+
+		<link name="torso_2_link">
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="5"/>
+				<inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+			</inertial>
+		</link>
+
+		<joint name="torso_3_joint" type="revolute">
+		  <origin xyz="0 0.09228 0.13477" rpy="0.5236 0 0" />
+		  <child link="torso_3_link" />
+		  <parent link="torso_2_link"/>
+		  <calibration rising="${torso_3_ref}"/>
+		  <axis xyz="0 0 1" />
+		  <dynamics damping="2.0" friction="0.0"/>
+		  <limit effort="100" lower="-6.2831" upper="6.2831" velocity="1.4"/>
+		</joint>
+
+		<link name="torso_3_link">
+			<inertial>
+				<origin xyz="0 0 0.3" rpy="0 0 0"/>
+				<mass value="20" />
+			<inertia ixx="0.1" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />  
+				<geometry>
+					<mesh filename="package://cob_description/meshes/cob4_torso/torso_link.stl"/>
+				</geometry> 
+				<material name="IPA/LightGrey"/>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<box size="0.001 0.001 0.001" />
+				</geometry>
+			</collision>
+		</link>
+    
+		<!-- left camera -->
+        <xacro:cob_kinect_v0 name="${name}_cam3d_left" ros_topic="cam3d_left" parent="${name}_3_link">
+			<origin xyz="${torso_cam3d_left_x} ${torso_cam3d_left_y} ${torso_cam3d_left_z}" rpy="${torso_cam3d_left_roll} ${torso_cam3d_left_pitch} ${torso_cam3d_left_yaw}" />
+		</xacro:cob_kinect_v0>
+
+		<!-- right camera -->
+        <xacro:cob_kinect_v0 name="${name}_cam3d_right" ros_topic="cam3d_right" parent="${name}_3_link">
+			<origin xyz="${torso_cam3d_right_x} ${torso_cam3d_right_y} ${torso_cam3d_right_z}" rpy="${torso_cam3d_right_roll} ${torso_cam3d_right_pitch} ${torso_cam3d_right_yaw}" />
+		</xacro:cob_kinect_v0>
+
+		<!-- down camera -->
+        <xacro:softkinetic name="${name}_cam3d_down" ros_topic="cam3d_down" parent="${name}_3_link">
+			<origin xyz="${torso_cam3d_down_x} ${torso_cam3d_down_y} ${torso_cam3d_down_z}" rpy="${torso_cam3d_down_roll} ${torso_cam3d_down_pitch} ${torso_cam3d_down_yaw}" />
+		</xacro:softkinetic>
+		
+	<!-- extensions -->
+	<xacro:torso_gazebo name="torso" />
+	<xacro:torso_transmission name="torso" />
+
+	</xacro:macro>
+
+</robot>

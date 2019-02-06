@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!-- start script_server -->
+	<node pkg="cob_script_server" type="script_server.py" name="script_server" cwd="node" respawn="false" output="screen" />
+
+	<!-- include rostest -->
+	<include file="$(find cob_script_server)/launch/script_server.test" />
+
+</launch>

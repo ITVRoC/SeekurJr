@@ -1,0 +1,52 @@
+#include <ros/ros.h>
+//#include <pr2_controllers_msgs/JointTrajectoryAction.h>
+#include <actionlib/client/simple_action_client.h>
+#include <control_msgs/FollowJointTrajectoryAction.h>
+#include "goal_publisher/SetGoal.h"
+
+int main(int argc, char **argv)
+{
+  ros::init(argc, argv, "goal_publisher_client");
+ /* if (argc != 3)
+  {
+    ROS_INFO("usage: add_two_ints_client X Y");
+    return 1;
+  }   */
+
+
+  ros::NodeHandle n;
+  ros::ServiceClient client = n.serviceClient<goal_publisher::SetGoal>("set_goal");
+  goal_publisher::SetGoal srv;
+  srv.request.pos_0 = atof(argv[1]);
+  srv.request.pos_1 = atof(argv[2]);
+  srv.request.pos_2 = atof(argv[3]);
+  srv.request.pos_3 = atof(argv[4]);
+  srv.request.pos_4 = atof(argv[5]);
+  srv.request.pos_5 = atof(argv[6]);
+
+
+// para imprimir valores/msgs (control_msgs:FollowJointTrajectoryActionGoal) do no em um topico(arm_controller/follow_joint_trajector/goal) com buffer de 1000
+
+    ros::Publisher Goal_pub = n.advertise<control_msgs::FollowJointTrajectoryActionGoal>("/arm_controller/follow_joint_trajectory/goal", 1000);
+
+
+  if (client.call(srv))
+  {
+     // Espera por um subscriber para depois poder publicar a msg
+	 while(Goal_pub.getNumSubscribers()==0)
+	{
+   		ROS_ERROR("Waiting for subscibers");
+   		sleep(5);
+	}
+  	ROS_INFO("Got subscribers");
+	Goal_pub.publish(srv.response.goal);	
+//	ROS_INFO("response:  %f ", srv.response.goal.goal.trajectory.points[0].positions[0]);
+  }
+ /* else
+  {  ROS_ERROR("Failed to call service set_goal");
+     return 1;
+  }
+*/
+  return 0;
+}
+

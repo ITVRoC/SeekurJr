@@ -1,0 +1,22 @@
+<package>
+  <description brief="ipa_canopen_core">
+
+     ROS-independent CANopen C++ library. 
+     User manual: https://github.com/ipa320/ipa_canopen/blob/groovy_dev/ipa_canopen_core/doc/usermanual.pdf
+
+  </description>
+  <author>Tobias Sing</author>
+  <author>Thiago de Freitas</author>
+  <maintainer email="tdf@ipa.fhg.de">Thiago de Freitas</maintainer>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/ipa_canopen_core</url>
+
+  <depend package="roscpp"/>
+  <depend package="libpcan"/>
+
+  <export>
+    <cpp cflags="-I${prefix}/include" lflags="-Wl,-rpath,${prefix}/lib -L${prefix}/lib -lipa_canopen_core"/>
+  </export>
+
+</package>

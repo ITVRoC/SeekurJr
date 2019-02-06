@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/guest/catkin_ws/src/BRACO_SCHUNK/schunk_robots/cob_extern/libpcan/build/devel/setup.sh
