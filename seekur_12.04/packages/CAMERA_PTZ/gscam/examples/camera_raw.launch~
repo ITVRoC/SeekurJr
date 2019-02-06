@@ -1,0 +1,24 @@
+<launch>
+
+  <!-- Set camera's video standard to NTSC -->
+  system("v4l2-ctl -s ntsc")
+  <!-- Set this to your camera's name -->
+  <arg name="cam_name" value="rvision" /> 
+
+  <!-- Start the GSCAM node -->
+  <env name="GSCAM_CONFIG" value="v4lsrc device=/dev/eagle0 ! video/x-raw-gray framerate=30/1 width=640 height=480 ! ffmpegcolorspace " />
+  <node pkg="gscam" type="gscam" name="$(arg cam_name)">
+    <param name="camera_name" value="$(arg cam_name)" />
+    <param name="camera_info_url" value="package://gscam/examples/uncalibrated_parameters.ini" />
+    <remap from="camera/image_raw" to="$(arg cam_name)/image_raw" />
+  </node>
+
+  <!-- View the raw and rectified output -->
+  <node pkg="image_view" type="image_view" name="creative_view" >
+    <remap from="image" to="/$(arg cam_name)/image_raw" />
+
+  </node>
+
+</launch>
+    
+  
