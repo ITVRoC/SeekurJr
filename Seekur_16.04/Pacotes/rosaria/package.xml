@@ -27,7 +27,6 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>message_generation</build_depend>
-  <build_depend>libaria</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>nav_msgs</build_depend>
   <build_depend>geometry_msgs</build_depend>
@@ -35,7 +34,12 @@
   <build_depend>std_msgs</build_depend>
   <build_depend>tf</build_depend>
   <build_depend>dynamic_reconfigure</build_depend>
-  <run_depend>libaria</run_depend>
+  
+  <!--Dependencias comentadas para que rosdep não tente instalar libaria-dev e libaria2v5
+     (Pacotes conflitantes com a versão do aria utlizado-->
+  <!--build_depend>libaria</build_depend> 
+  <run_depend>libaria</run_depend-->
+  
   <run_depend>roscpp</run_depend>
   <run_depend>nav_msgs</run_depend>
   <run_depend>geometry_msgs</run_depend>
