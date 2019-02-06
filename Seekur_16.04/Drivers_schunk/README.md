@@ -20,3 +20,4 @@ protocol for that joint is correct.
 ## MTS
 
 In this folder there is an executable for calibration and configuration of the robotic arm as well as manuals for the gripper and how to use the MTS.
+**OBS:** If the reference change does not work with the CanOpen protocol, it must be performed with the SMP
