@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/guest/catkin_ws/src/nmea_gps_driver/build/devel/setup.sh
