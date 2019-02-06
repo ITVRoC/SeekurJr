@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!-- Start Gazebo with wg world running in (max) realtime -->
+  <!--<include file="$(find hector_gazebo_worlds)/launch/rolling_landscape_120m.launch"/> -->
+  <!-- <arg name="world" value="$(find hector_gazebo_worlds)/worlds/rolling_landscape_120m.world"/> -->
+  <!--<arg name="world" default="worlds/empty.world"/>-->
+  <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+  <!--<arg name="world" default="worlds/willow_garage.world"/>-->
+  <!--<arg name="world" value="$(find hector_gazebo_worlds)/worlds/willow_garage_map.world"/>-->
+  <!-- <arg name="world" default="worlds/willow_garage_map.world"/> -->
+  <!--<arg name="world" default="$(find seekurjr_gazebo)/worlds/map.world"/>-->
+  <!--  <arg name="world" default=""/> -->
+
+
+  <arg name="world" default="$(find seekurjr_gazebo)/worlds/map.world"/>
+
+  <arg name="tf_prefix" default="$(optenv ROS_NAMESPACE)"/>
+ <!-- <arg name="tf_prefix" default="seekurjr"/> -->
+  <arg name="model" default="$(find seekurjr_gazebo)/urdf/seekurjr.xacro.xml"/>
+  <arg name="name" default="seekurjr"/>
+
+	<arg name="gazebo_gui" default="true"/>
+	<arg name="gui" default="true"/>
+	<param name="/use_sim_time" value="true" />
+
+
+  <node name="gazebo" pkg="gazebo_ros" type="gzserver" args="$(arg world)" respawn="false" output="screen"/>
+
+  <!-- Spawn simulated seekurjr -->
+  	<include file="$(find seekurjr_gazebo)/launch/spawn_model.launch" >
+	  	<arg name="tf_prefix" value="$(arg tf_prefix)" />
+		<arg name="x" default="0.0"/>
+		<arg name="y" default="0.0"/>
+		<arg name="z" default="0.2"/>
+		<arg name="model" default="$(find seekurjr_gazebo)/urdf/seekurjr.xacro.xml"/>
+		<arg name="name" default="seekurjr"/>
+    </include>
+
+
+  <!-- start gui -->
+  <group if="$(arg gui)">
+    <group if="$(arg gazebo_gui)">
+    	<node name="gazebo_gui" pkg="gazebo_ros" type="gzclient"
+    	respawn="false" output="screen"/>
+		</group>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find seekurjr_gazebo)/urdf.rviz"/>
+  </group>
+
+</launch>
