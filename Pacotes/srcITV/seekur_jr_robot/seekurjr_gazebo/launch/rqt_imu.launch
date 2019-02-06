@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-	<!-- rqt gui for monitoring -->
-	<node name="monitoring" pkg="rqt_gui" type="rqt_gui" respawn="false" args="--perspective-file $(find seekurjr_gazebo)/rqt/imu.perspective" output="screen"/>
-
-</launch>
