@@ -1,0 +1,3 @@
+<launch>
+    <node name="ptz_commander_node" pkg="pan_tilt_zoom" type="ptz_commander_node" output="screen"></node>
+</launch>
