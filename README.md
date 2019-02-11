@@ -12,4 +12,4 @@
 
 - **Seekur_12.04** - Packages used on seekur jr (compatible with ubuntu 12.04)
 
-Please see the [Wiki](https://github.com/ITVRoC/SeekurJr/wiki) for more information.
+### Please see the [Wiki](https://github.com/ITVRoC/SeekurJr/wiki) for more information.
