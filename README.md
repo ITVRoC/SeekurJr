@@ -9,6 +9,7 @@
     -Schunk Arm Drivers for calibration and control 
 
     -Packages used in Seekur Jr (compatible with ubuntu 16.04).
+- **Seekur_CDs** - CDs containing softwares from Adept Mobile Robots (Aria, Arnl, MOGS and etc.) and Commonplace robotics FTSLWA (Force/Torque sensor).
 
 - **Seekur_12.04** - Packages used on seekur jr (compatible with ubuntu 12.04)
 
