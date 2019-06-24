@@ -1,0 +1,4 @@
+<launch>
+    <node name="force_plot" pkg="rqt_plot" type="rqt_plot" args="/force_torque/wrench/force" />
+    <node name="torque_plot" pkg="rqt_plot" type="rqt_plot" args="/force_torque/wrench/torque" />
+</launch>
